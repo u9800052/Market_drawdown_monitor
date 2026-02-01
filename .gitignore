@@ -1,0 +1,5 @@
+venv/
+.vscode/
+__pycache__/
+draft.ipynb
+.ipynb_checkpoints/
