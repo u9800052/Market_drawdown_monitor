@@ -4,11 +4,15 @@
         "High": 74.5,
         "Threshold": -0.05
     },
+    "2330.TW": {
+        "Date": "2026-01-28",
+        "High": 1820.00,
+        "Threshold": -0.05
+    },
     "CIBR": {
         "Date": "2025-10-28",
         "High": 78.34,
-        "Threshold": -0.15000000000000002,
-        "Notified": true
+        "Threshold": -0.05
     },
     "VT": {
         "Date": "2026-01-29",
