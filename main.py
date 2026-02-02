@@ -54,7 +54,7 @@ try:
                 data_changed = True
 
             if drawdown <= stock['Threshold']:
-                send_line_message(f"前一交易日「{ticker}」自前高點回撤「{drawdown*100:.2f}%」，下跌超過{stock['Threshold']:.2f}%，考慮買進！")
+                send_line_message(f"前一交易日「{ticker}」自高點回撤「{drawdown*100:.2f}%」，下跌超過{stock['Threshold']*100:.2f}%，考慮買進！")
                 stock['Notified'] = True
                 stock['Threshold'] -= 0.05
                 data_changed = True
