@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import yfinance as yf
+from datetime import datetime
 import json
 import os
 import sys
@@ -22,9 +23,9 @@ def send_line_message(msg):
     except Exception as e:
         print(f"LINE Message Error: {e}")
 
-tickers = ["VT", "^GSPC", "0050.TW", "CIBR"]
+tickers = ["VT", "^GSPC", "0050.TW", "2330.TW", "CIBR"]
 try:
-    df = yf.download(tickers, period="5d", auto_adjust=True)  
+    df = yf.download(tickers, period="5d", auto_adjust=True, group_by='column')  
     if df.empty:
         raise ValueError("YFinance returned empty dataframe")
         
@@ -36,24 +37,24 @@ try:
     with open('Records.json', 'r+', encoding='utf-8') as f:
         recs = json.load(f)
         data_changed = False
-        daily_low = df['Low']
-        for c in df.columns:
-            price = daily_low[c].dropna().iloc[-1]
-            stock = recs[c]
-            drawdown = (price - stock['High']) / stock['High']
 
-            if price >= stock['High']:
-                from datetime import datetime
+        for ticker in tickers:
+            stock = recs[ticker]
+            daily_high = float(df['High'][ticker].dropna().tail(1).iloc[0])
+            daily_low = float(df['Low'][ticker].dropna().tail(1).iloc[0])
+            drawdown = (daily_low - stock['High']) / stock['High']
+
+            if daily_high >= stock['High']:
                 now = datetime.now()
-                stock['Date'] = df[c].index[-1].strftime("%Y-%m-%d")
-                stock['High'] = price
+                stock['Date'] = df['High'][ticker].dropna().tail(1).index[-1].strftime("%Y-%m-%d")
+
+                stock['High'] = daily_high
                 stock['Threshold'] = -0.05
                 stock['Notified'] = False
                 data_changed = True
-                continue
 
-            elif drawdown <= stock['Threshold']:
-                send_line_message(f'前一交易日「{c}」自前高點回撤「{drawdown*100:.2f}%」，準備加碼買進！')
+            if drawdown <= stock['Threshold']:
+                send_line_message(f"前一交易日「{ticker}」自前高點回撤「{drawdown*100:.2f}%」，下跌超過{stock['Threshold']:.2f}%，考慮買進！")
                 stock['Notified'] = True
                 stock['Threshold'] -= 0.05
                 data_changed = True
