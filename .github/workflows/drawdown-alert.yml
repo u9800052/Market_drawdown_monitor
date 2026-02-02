@@ -1,0 +1,56 @@
+name: Drawdown Alert
+
+on:
+  schedule:
+    # 這是 "Cron Job" 語法 (UTC 時間)
+    # 台灣上午 08:30 = UTC 早上 00:30 (因為台灣是 UTC+8)
+    # 格式: 分 時 日 月 星期
+    # "30 5 * * 1-5" 代表：週一到週五的 UTC 05:30 執行
+    - cron: '30 0 * * 1-5'
+  
+  # 讓你可以在網頁上按按鈕手動測試 (Workflow Dispatch)
+  workflow_dispatch:
+
+# --- 重要：賦予寫入權限，否則 git push 會失敗 ---
+permissions:
+  contents: write
+
+# --- 2. 設定工作內容 (Jobs) ---
+jobs:
+  run-stock-check:
+    runs-on: ubuntu-latest # 指定用 Linux 虛擬機跑
+
+    steps:
+      # 步驟 A: 把你的程式碼抓下來
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 步驟 B: 安裝 Python 環境
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' # 指定 Python 版本
+
+      # 步驟 C: 安裝 requirements.txt
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 步驟 D: 執行 Python 程式
+      # 關鍵：在這裡把藏寶箱裡的 Secret 注入給程式
+      - name: Run Stock Script
+        env: 
+          CHANNEL_ACCESS_TOKEN: ${{ secrets.CHANNEL_ACCESS_TOKEN }}
+          USER_ID: ${{ secrets.USER_ID }}
+        run: python main.py
+
+      # 步驟 D: 只有當 Records.json 有變動時才 Commit
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add Records.json
+          # 如果沒有變更，git commit 會失敗，所以加上 || exit 0 讓它 Pass
+          git commit -m "Update stock records [skip ci]" || exit 0
+          git push
