@@ -19,7 +19,8 @@ def send_line_message(msg):
             return
         line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
         message = TextSendMessage(text=msg)
-        line_bot_api.push_message(USER_ID, message)
+        # line_bot_api.push_message(USER_ID, message)
+        line_bot_api.broadcast(message)
     except Exception as e:
         print(f"LINE Message Error: {e}")
 
@@ -54,7 +55,7 @@ try:
                 data_changed = True
 
             if drawdown <= stock['Threshold']:
-                send_line_message(f"前一交易日「{ticker}」自高點回撤「{drawdown*100:.2f}%」，下跌超過{stock['Threshold']*100:.2f}%，考慮買進！")
+                send_line_message(f"前一交易日「{ticker}」自高點回撤「{drawdown*100:.0f}%」，下跌超過{stock['Threshold']*100:.2f}%，考慮買進！")
                 stock['Notified'] = True
                 stock['Threshold'] -= 0.05
                 data_changed = True
