@@ -13,7 +13,7 @@
     "CIBR": {
         "Date": "2025-10-28",
         "High": 78.34,
-        "Threshold": -0.10,
+        "Threshold": -0.15000000000000002,
         "Notified": true
     },
     "VT": {
