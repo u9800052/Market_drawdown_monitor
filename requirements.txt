@@ -1,2 +1,2 @@
-yfinance>=0.2.40
-line-bot-sdk
+yfinance==1.1.0
+line-bot-sdk==3.22.0
