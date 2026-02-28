@@ -24,7 +24,7 @@ def send_line_message(msg):
     except Exception as e:
         print(f"LINE Message Error: {e}")
 
-tickers = ["VT", "^GSPC", "0050.TW", "2330.TW", "CIBR"]
+tickers = ["VT", "^GSPC", "0050.TW", "2330.TW", "VEA"]
 try:
     df = yf.download(tickers, period="5d", auto_adjust=True, group_by='column')  
     if df.empty:
@@ -60,7 +60,7 @@ try:
                 stock['Threshold'] -= 0.05
                 data_changed = True
             
-        # 寫入json檔
+        # 寫入json檔-
         if data_changed:
             f.seek(0)
             json.dump(recs, f, ensure_ascii=False, indent=4)
