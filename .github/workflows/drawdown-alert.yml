@@ -45,7 +45,7 @@ jobs:
       # 步驟 C: 安裝 requirements.txt
       - name: Install dependencies
         run: |
-          pip -m install --upgrade pip
+          python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
       # 步驟 D: 執行 Python 程式
