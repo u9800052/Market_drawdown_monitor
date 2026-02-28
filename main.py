@@ -70,5 +70,5 @@ try:
             f.truncate()
 except Exception as e:
     print(f"Script Error: {e}")
-    send_error_message(f'Github Actions 執行發生錯誤:\n{str(e)}')
+    send_error_message(f'GitHub Actions 執行發生錯誤:\n{str(e)}')
     sys.exit(1)
