@@ -1,28 +1,26 @@
 {
     "0050.TW": {
-        "Date": "2026-01-29",
-        "High": 74.5,
+        "Date": "2026-02-25",
+        "High": 81.80,
         "Threshold": -0.05
     },
     "2330.TW": {
-        "Date": "2026-01-29",
-        "High": 1835.0,
-        "Threshold": -0.05,
-        "Notified": false
+        "Date": "2026-02-25",
+        "High": 1995.00,
+        "Threshold": -0.05
     },
-    "CIBR": {
-        "Date": "2025-10-28",
-        "High": 78.34,
-        "Threshold": -0.15000000000000002,
-        "Notified": true
+    "VEA": {
+        "Date": "2026-99-99",
+        "High": 11.99,
+        "Threshold": -0.05
     },
     "VT": {
-        "Date": "2026-01-29",
-        "High": 147.48,
+        "Date": "2026-02-23",
+        "High": 147.65,
         "Threshold": -0.05
     },
     "^GSPC": {
-        "Date": "2026-01-28",
+        "Date": "2026-01-26",
         "High": 7002.28,
         "Threshold": -0.05
     }
